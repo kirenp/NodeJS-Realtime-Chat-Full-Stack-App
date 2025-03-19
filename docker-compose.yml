@@ -1,18 +1,38 @@
-version: '3.8'
+# version: '3.8'
 
+# services:
+#   backend:
+#     build: ./backend
+#     ports:
+#       - "5000:5000"
+#     environment:
+#       - NODE_ENV=production
+#     depends_on:
+#       - frontend
+
+#   frontend:
+#     build: ./frontend
+#     ports:
+#       - "80:80"
+#     depends_on:
+#       - backend
 services:
   backend:
     build: ./backend
     ports:
       - "5000:5000"
+    volumes:
+      - ./backend:/app
     environment:
-      - NODE_ENV=production
-    depends_on:
-      - frontend
+      NODE_ENV: production
 
   frontend:
     build: ./frontend
     ports:
-      - "80:80"
+      - "3001:80"  # Nginx container runs on port 80
+    volumes:
+      - ./frontend:/app
+    environment:
+      NODE_ENV: production
     depends_on:
-      - backend
+      - backend  # Only frontend depends on backend
